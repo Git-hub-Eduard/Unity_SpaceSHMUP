@@ -44,6 +44,8 @@ public class Hero : MonoBehaviour
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
         /*
          * Строка transform.rotation... сообщает объекту под каким углом наклонять корабль при движении
+         * Функция Quaternion.Euler - 1 переменная  - поварачивает корабль, когда он двигаетса вверх или вниз, по оси Х
+         * Функция Quaternion.Euler - 2 переменная - поварачивает корабль когда он двигаетса влево или в право, по оси У 
          */
     }
 }
