@@ -45,4 +45,17 @@ public class Enemy : MonoBehaviour
         temPos.y -= speed * Time.deltaTime;// переместить объект вниз
         pos = temPos;//Переместить корабль
     }
+    void OnCollisionEnter(Collision collision)
+    {
+        GameObject otherGO = collision.gameObject;//Передать ссылку в otherGO на игровой объект что столкнулся с ним
+        if(otherGO.tag == "ProjectileHero")//Проверит являетса ли игровой объект что столкнулся с ним - снаряд
+        {
+            Destroy(otherGO);//Если это снаряд то уничтожить сам снаряд 
+            Destroy(gameObject);// И объект что столкнулся с снарядом
+        }
+        else
+        {
+            print("Enemy hit by non-ProjectileHero: " + otherGO.name);// В ином случае сообщить об этом
+        }
+    }
 }
