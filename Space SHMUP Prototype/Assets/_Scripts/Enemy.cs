@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public float fireRate = 0.3f;// Секунды между выстрелами
     public float health = 10;// количество жизней
     public int score = 100;// Очки за уничтожение корабля
-    private BoundsCheck bndCheck;// Ссылка на компонент BoundsCheck, что подключон к этому игровому объекту
+    protected BoundsCheck bndCheck;// Ссылка на компонент BoundsCheck, что подключон к этому игровому объекту
     //Это свойство: метод, действующий как поле
     public Vector3 pos
     {

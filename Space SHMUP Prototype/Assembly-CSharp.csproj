@@ -57,15 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Enemy.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_1.cs" />
     <Compile Include="Assets\_Scripts\Shield.cs" />
     <Compile Include="Assets\_Scripts\Projectile.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_3.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_4.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_2.cs" />
     <Compile Include="Assets\_Scripts\Hero.cs" />
     <Compile Include="Assets\_Scripts\Main.cs" />
     <Compile Include="Assets\_Scripts\BoundsCheck.cs" />
-    <Compile Include="Assets\_Scripts\Enemy_1.cs" />
-    <Compile Include="Assets\_Scripts\Enemy_2.cs" />
-    <Compile Include="Assets\_Scripts\Enemy_3.cs" />
-    <Compile Include="Assets\_Scripts\Enemy_4.cs" />
+    <Compile Include="Assets\_Scripts\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Materials\UnlitAlpha.shader" />
