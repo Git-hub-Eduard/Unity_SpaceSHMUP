@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     static public Main S;// объект одиночка
+    static Dictionary<WeaponType, WeaponDefinion> WEAP_DICT;// объявление словаря
     [Header("Set in Inspector")]
     public GameObject[] prefabEnemies;// Масив шадлонов Enemy
     public float enemySpawnPerSecond = 0.5f;// Создание вражеских кораблей за еденицу времени
     public float enemyDefaultPadding = 1.5f;
     //Отступ для позиционирования.
+    public WeaponDefinion[] weaponDefinions;// Масив оржия 
     private BoundsCheck bndCheck;
     // Start is called before the first frame update
     void Awake()
@@ -20,6 +22,13 @@ public class Main : MonoBehaviour
         bndCheck = GetComponent<BoundsCheck>();
         //Вызвать SpawnEnemy
         Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
+
+        //Словарь с ключами типа WeaponType
+        WEAP_DICT = new Dictionary<WeaponType, WeaponDefinion>();//Инициализировать словарь
+        foreach(WeaponDefinion def in weaponDefinions)
+        {
+            WEAP_DICT[def.type] = def;//Записать в словарь елмент что соотвецтвует его типу вооружения 
+        }
     }
     public void SpawnEnemy()
     {
@@ -51,4 +60,30 @@ public class Main : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
     }
+
+
+
+    /// <summary>
+    /// Статическая функция, возвращающая WeaponDefinition из статического
+    /// защищенного поля WEAP_DICT класса Main.
+    /// </summary>
+    /// <returns>
+    /// Экземпляр WeaponDefinition или, если нет такого определения
+    /// для указанного WeaponType, возвращает новый экземпляр WeaponDefinition
+    /// с типом none
+    /// </returns>
+    /// <param name="wt"> Tnn оружия WeaponType, для которого требуется получить WeaponDefinition</param>
+    /// <returns></returns>
+    static public WeaponDefinion GetWeaponDefinion(WeaponType wt)
+    {
+        //Проверит наличие указаного клуюча в словаре 
+        if(WEAP_DICT.ContainsKey(wt))
+        {
+            return (WEAP_DICT[wt]);// Возвращать экземпляр что соответствует определееному типу орижия
+        }
+
+        //Возвратить новый экзмпляр с типом оружия WeaponType.none  если не удалось найти в словаре 
+        return (new WeaponDefinion());
+    }
+
 }

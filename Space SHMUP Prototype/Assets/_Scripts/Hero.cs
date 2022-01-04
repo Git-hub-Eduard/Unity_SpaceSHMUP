@@ -17,17 +17,23 @@ public class Hero : MonoBehaviour
     [SerializeField]
     private float _shieldLevel = 1;
     private GameObject lastTriggerGo = null;//переменная хранит ссылку на последний столкнувшийся игровой объект  
-     void Awake()
-     {
+
+    //Объявление нового делегата WeaponFireDelegate
+    public delegate void WeaponFireDelegate();
+    //Создание поле типа WeaponFireDelegate с именем fireDelegate
+    public WeaponFireDelegate fireDelegate;
+    void Awake()
+    {
        if(S==null)
-        {
-            S = this;//Сохранить ссылку на одиночку
-        }
+       {
+           S = this;//Сохранить ссылку на одиночку
+       }
        else
-        {
-            Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");// Прописать ошибку если создан ещё один экземпляр Hero S
-        }
-     }
+       {
+           Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");// Прописать ошибку если создан ещё один экземпляр Hero S
+       }
+       // fireDelegate += TempFire;//добавить TempFire в fireDelegate, благодаря чему TempFire будет вызыватса при каждом вызове fireDelegate
+    }
     // Update is called once per frame
     void Update()
     {
@@ -54,18 +60,33 @@ public class Hero : MonoBehaviour
          */
 
         //Позволить кораблю выстрелить 
-        if(Input.GetKeyDown(KeyCode.Space))// При нажатии пробела стрелять
+        // if(Input.GetKeyDown(KeyCode.Space))// При нажатии пробела стрелять
+        // {
+        //     TempFire();
+        //}
+
+        //Произвести выстрел из всех видов оружия вызовом fireDelegate
+        //Сначала произвести нажатие клавиши Axis("Jump")
+        //Затем убедитса что fireDelegate не равно null
+        //Чтобы избежать ошибки 
+        if(Input.GetAxis("Jump") == 1 && fireDelegate != null)
         {
-            TempFire();
+            //Если была нажата клавиша то Input.GetAxis("Jump") вернёт 1
+            fireDelegate();//вызов делегата  к кторой подключон метод  TempFire
         }
     }
-    void TempFire()
+   /* void TempFire()
     {
         GameObject projGO = Instantiate<GameObject>(projectilePrefab);//Создать снаряд
         projGO.transform.position = transform.position;//Установить кординаты что и у корабля 
         Rigidbody rigidB = projGO.GetComponent<Rigidbody>();// Получить компонент Rigidbody у снаряда
-        rigidB.velocity = Vector3.up * projectileSpeed;// Дать снаряду ускорения
-    }
+        // rigidB.velocity = Vector3.up * projectileSpeed;// Дать снаряду ускорения
+        Projectile proj = projGO.GetComponent<Projectile>();//Получить сылку на клас Projectile из снаряда 
+        proj.type = WeaponType.blaster;// Изменить тип оружия для снаряда на blaster
+        float tSpeed = Main.GetWeaponDefinion(proj.type).velocity;//Находим соотвецтвующий экхемпяр WeaponDefinion для типа оружия proj.type
+        // И в нём находим параметр скорости снаряда velocity
+        rigidB.velocity = Vector3.up * tSpeed;//Дать снаряду ускорение через Rigidbody.velocity снапяда
+    }*/
     void OnTriggerEnter(Collider other)//Срабатывает при столкновении колайдера игрока с другими объектами 
     {
         Transform rootT = other.gameObject.transform.root;//Передать компонент Transform объекта родителя
