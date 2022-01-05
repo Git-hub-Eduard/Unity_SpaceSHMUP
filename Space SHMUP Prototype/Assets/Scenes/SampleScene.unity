@@ -473,7 +473,7 @@ MonoBehaviour:
     color: {r: 0.14887854, g: 0.28508362, b: 0.9622642, a: 1}
     projectilePefab: {fileID: 4029941863120307467, guid: e9fe7a618a9634840af2df239d4678fb, type: 3}
     projectileColor: {r: 0.14901961, g: 0.28627452, b: 0.9647059, a: 1}
-    damageOnHit: 1
+    damageOnHit: 2
     continuousDamage: 0
     delayBetwenshots: 0.4
     velocity: 50

@@ -45,17 +45,36 @@ public class Enemy : MonoBehaviour
         temPos.y -= speed * Time.deltaTime;// переместить объект вниз
         pos = temPos;//Переместить корабль
     }
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision coll)
     {
-        GameObject otherGO = collision.gameObject;//Передать ссылку в otherGO на игровой объект что столкнулся с ним
-        if(otherGO.tag == "ProjectileHero")//Проверит являетса ли игровой объект что столкнулся с ним - снаряд
+        GameObject otherGO = coll.gameObject;// Получить ссылку на игровой объект что столкнулся с врагом
+        switch(otherGO.tag)
         {
-            Destroy(otherGO);//Если это снаряд то уничтожить сам снаряд 
-            Destroy(gameObject);// И объект что столкнулся с снарядом
-        }
-        else
-        {
-            print("Enemy hit by non-ProjectileHero: " + otherGO.name);// В ином случае сообщить об этом
+            case "ProjectileHero":
+                Projectile p = otherGO.GetComponent<Projectile>();//Добуть компонент Projectile(код) игрового объекта
+
+                //Если вражеский корабль за границами экрана
+                //Не наносить ему повреждений
+
+                if(!bndCheck.isOnScreen)
+                {
+                    Destroy(otherGO);//Уничтожить снаряд
+                    break;
+                }
+
+                //Поразить вражеский корабль 
+                //Получить разрушающую силу в класе Main
+                health -= Main.GetWeaponDefinion(p.type).damageOnHit;//Нанести урон
+                if(health<=0)
+                {
+                    //Если жизни меньше чем 0 уничтожить врага
+                    Destroy(this.gameObject);
+                }
+                Destroy(otherGO);//Уничтожить снаряд
+                break;
+            default:
+                print("Enemy hit by non-Projectile " + otherGO.name);
+                break;
         }
     }
 }
