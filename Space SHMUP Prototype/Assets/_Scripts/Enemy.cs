@@ -9,6 +9,15 @@ public class Enemy : MonoBehaviour
     public float fireRate = 0.3f;// Секунды между выстрелами
     public float health = 10;// количество жизней
     public int score = 100;// Очки за уничтожение корабля
+
+    //Реакция на попадание параметры 
+    public float showDamageDuration = 0.1f;//Длительность эфекта попадания в секунду
+    [Header("Set Dynamically")]
+    public Color[] originalColors;//Здесь будут хранитса оригинальные цвета игрового объета Enemy и его дочерних класов
+    public Material[] materials;//Все материалы игрового объекта и его потомков
+    public bool showingDamage = false;//Сообщает если true - значит игровой объект окрашен в красный, если false - нет
+    public float damageDoneTime;//Время прекращение отображение эфекта
+    public bool notifiedOfDestruction = false;// Будет использоватса позже
     protected BoundsCheck bndCheck;// Ссылка на компонент BoundsCheck, что подключон к этому игровому объекту
     //Это свойство: метод, действующий как поле
     public Vector3 pos
@@ -25,14 +34,33 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         bndCheck = GetComponent<BoundsCheck>();
-        //Получить ссылку га компонент сценария BoundsCheck что подключон к этому игровому объекту
+        //Получить ссылку на компонент сценария BoundsCheck что подключон к этому игровому объекту
+
+        //Получить материалы и цвет этого объекта и его потомков
+        materials = Utils.GetAllMaterials(gameObject);
+        originalColors = new Color[materials.Length];//Инициализировать масив для записи оригинальных цветов объекта
+        for(int i =0; i<materials.Length; i++)
+        {
+            /*
+             * С помощью цикла выполняетса обход всех материалов и сохраняет их исходные цвета 
+             * в масив originalColors
+             */
+            originalColors[i] = materials[i].color;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();// Перемещать корабль вниз 
-        if(bndCheck != null && bndCheck.offDown)
+        if(showingDamage && Time.time> damageDoneTime)
+        {
+            //Если showingDamage = true; и
+            //Time.time> damageDoneTime то есть
+            //если время больше за время прекращение ефекта отображение попадания  - прекратить ефект
+            UnShowDamage();
+        }
+        if (bndCheck != null && bndCheck.offDown)
         {
 
             //Убедитса, что корабль вышел за нижнюю границу - уничтожить
@@ -62,7 +90,8 @@ public class Enemy : MonoBehaviour
                     break;
                 }
 
-                //Поразить вражеский корабль 
+                //Поразить вражеский корабль
+                ShowDamage();//Отобразить попадание
                 //Получить разрушающую силу в класе Main
                 health -= Main.GetWeaponDefinion(p.type).damageOnHit;//Нанести урон
                 if(health<=0)
@@ -76,5 +105,34 @@ public class Enemy : MonoBehaviour
                 print("Enemy hit by non-Projectile " + otherGO.name);
                 break;
         }
+    }
+
+    /// <summary>
+    /// Метод ShowDamage - отображает реакцию на попадание 
+    /// путьом перекрашивание всех материалов объекта в красный цвет
+    /// </summary>
+    void ShowDamage()
+    {
+        foreach(Material m in materials)
+        {
+            //В цикле происходит обход всех материалов и перекрашивают в красний цвет
+            m.color = Color.red;
+        }
+        showingDamage = true;//Установить что попадание отображено
+        damageDoneTime = Time.time + showDamageDuration;//Вычислить время окончания ефекта
+    }
+
+    /// <summary>
+    /// Функция UnShowDamage - прекращает ефект реакции попадания
+    /// путьом перекрашивание всех материалов объекта в исходный цвет
+    /// </summary>
+    void UnShowDamage()
+    {
+        for(int i = 0; i<materials.Length; i++)
+        {
+            //В цикле происходит обход всех материалов и перекрашивают в исходный цвет
+            materials[i].color = originalColors[i];
+        }
+        showingDamage = false;//Устанавливает что эфект закончился
     }
 }
