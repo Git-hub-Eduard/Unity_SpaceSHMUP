@@ -12,8 +12,35 @@ public class Main : MonoBehaviour
     public float enemySpawnPerSecond = 0.5f;// Создание вражеских кораблей за еденицу времени
     public float enemyDefaultPadding = 1.5f;
     //Отступ для позиционирования.
-    public WeaponDefinion[] weaponDefinions;// Масив оржия 
+    public WeaponDefinion[] weaponDefinions;// Масив оржия
+    public GameObject prefabPowerUp;//шаблон для всех бонусов
+    public WeaponType[] powerUpFrequency = new WeaponType[] { WeaponType.blaster, WeaponType.blaster, WeaponType.spread, WeaponType.shield };
+    /*
+     * powerUpFrequency - масив типов оружия для бонусов
+     */
     private BoundsCheck bndCheck;
+    /// <summary>
+    /// Данный метод создает бонус на месте уничтоженого корабля
+    /// </summary>
+    /// <param name="e">Экземпляр врга кторый был уничтожен</param>
+    public void ShipDestroyed(Enemy e)
+    {
+        //Сгенерировать бонус с заданой вероятностю
+        if(Random.value <= e.powerUpDropChance)
+        {
+            //Выбрать тип бонуса
+            //Выбрать один из елементов в powerUpFrequency
+            int ndx = Random.Range(0, powerUpFrequency.Length);
+            WeaponType puType = powerUpFrequency[ndx];
+            //Создать экземпляр PowerUp
+            GameObject go = Instantiate(prefabPowerUp) as GameObject;
+            PowerUp pu = go.GetComponent<PowerUp>();
+            //Установить соотвецтвующий тип WeaponType
+            pu.SetType(puType);
+            //Поместить в место, где находитса разрушеный корабль
+            pu.transform.position = e.transform.position;
+        }
+    }
     // Start is called before the first frame update
     void Awake()
     {

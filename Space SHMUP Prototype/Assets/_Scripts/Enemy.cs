@@ -12,12 +12,13 @@ public class Enemy : MonoBehaviour
 
     //Реакция на попадание параметры 
     public float showDamageDuration = 0.1f;//Длительность эфекта попадания в секунду
+    public float powerUpDropChance = 1f;//Шанс сбросить бонус
     [Header("Set Dynamically")]
     public Color[] originalColors;//Здесь будут хранитса оригинальные цвета игрового объета Enemy и его дочерних класов
     public Material[] materials;//Все материалы игрового объекта и его потомков
     public bool showingDamage = false;//Сообщает если true - значит игровой объект окрашен в красный, если false - нет
     public float damageDoneTime;//Время прекращение отображение эфекта
-    public bool notifiedOfDestruction = false;// Будет использоватса позже
+    public bool notifiedOfDestruction = false;// Будет использоватса позже - когда нада збросить бонус
     protected BoundsCheck bndCheck;// Ссылка на компонент BoundsCheck, что подключон к этому игровому объекту
     //Это свойство: метод, действующий как поле
     public Vector3 pos
@@ -96,6 +97,12 @@ public class Enemy : MonoBehaviour
                 health -= Main.GetWeaponDefinion(p.type).damageOnHit;//Нанести урон
                 if(health<=0)
                 {
+                    //Сообщить Main про уничтожение корабля
+                    if(!notifiedOfDestruction)
+                    {
+                        Main.S.ShipDestroyed(this);//Создать бонус
+                    }
+                    notifiedOfDestruction = true;
                     //Если жизни меньше чем 0 уничтожить врага
                     Destroy(this.gameObject);
                 }

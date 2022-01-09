@@ -67,6 +67,7 @@
     <Compile Include="Assets\_Scripts\Hero.cs" />
     <Compile Include="Assets\_Scripts\Main.cs" />
     <Compile Include="Assets\_Scripts\BoundsCheck.cs" />
+    <Compile Include="Assets\_Scripts\PowerUp.cs" />
     <Compile Include="Assets\_Scripts\Utils.cs" />
   </ItemGroup>
   <ItemGroup>

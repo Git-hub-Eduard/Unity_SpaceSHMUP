@@ -13,6 +13,7 @@ public class Hero : MonoBehaviour
     public float RestartDelay = 2f;//Через сколько перезагрузить игру
     public GameObject projectilePrefab;//Шаблон снаряда
     public float projectileSpeed = 40;//Скорость снаряда 
+    public Weapon[] weapons;//Масив будет хранить ссылки на каждое оружие
     [Header("Set Dynamically")]
     [SerializeField]
     private float _shieldLevel = 1;
@@ -22,7 +23,7 @@ public class Hero : MonoBehaviour
     public delegate void WeaponFireDelegate();
     //Создание поле типа WeaponFireDelegate с именем fireDelegate
     public WeaponFireDelegate fireDelegate;
-    void Awake()
+    void Start()
     {
        if(S==null)
        {
@@ -32,7 +33,10 @@ public class Hero : MonoBehaviour
        {
            Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");// Прописать ошибку если создан ещё один экземпляр Hero S
        }
-       // fireDelegate += TempFire;//добавить TempFire в fireDelegate, благодаря чему TempFire будет вызыватса при каждом вызове fireDelegate
+        // fireDelegate += TempFire;//добавить TempFire в fireDelegate, благодаря чему TempFire будет вызыватса при каждом вызове fireDelegate
+        // Очистить массив weapons и начать игру с 1 бластером
+        ClearWeapons();
+        weapons[0].SetType(WeaponType.blaster);
     }
     // Update is called once per frame
     void Update()
@@ -104,10 +108,48 @@ public class Hero : MonoBehaviour
             shieldLevel--;//Уменьшить уровень защиты на 1
             Destroy(go);//Уничтожить врага
         }
+        else if(go.tag == "PowerUp")//Проверить если игровой объект с которым столкнулся игрок являетса ли он бонусом
+        {
+            AbsorpPowerUp(go);
+        }
         else//Если игрок столкнулся с другим объектом не имеющего тега Enemy
         {
             print("Triggered by non-Enemy: " + go.name);// написать ообщение, что б можно было узнать об этом
         }
+    }
+
+    /// <summary>
+    /// Выполняетса когда игрок сталкиваетса с бонусом
+    /// </summary>
+    /// <param name="go">Игровой объект бонус</param>
+    public void AbsorpPowerUp(GameObject go)
+    {
+        PowerUp pu = go.GetComponent<PowerUp>();//получить ссылку на компонент PowerUp
+        switch (pu.type)
+        {
+            case WeaponType.shield://Если тип бонуса щит 
+                shieldLevel++;//Прибавить к щиту 1
+                break;
+            default:
+                if(pu.type == weapons[0].type)
+                {
+                    //Если оружие того же типа что и бонус
+                    Weapon w = GetEmptyWeaponSlot();//Находим пустой слот оружия 
+                    if(w!= null)
+                    {
+                        //Установить оружие на пустой слот
+                        w.SetType(pu.type);
+                    }
+                }
+                else//Если оружие другого типа 
+                {
+                    ClearWeapons();//Очистить все слоты оружия
+                    weapons[0].SetType(pu.type);//Установить новое оружие
+                }
+                break;
+
+        }
+        pu.AbsorbedBy(this.gameObject);
     }
     public float shieldLevel
     {
@@ -124,6 +166,35 @@ public class Hero : MonoBehaviour
                 Destroy(this.gameObject);//уничтожить корабль игрока
                 Main.S.DelayedRestart(RestartDelay);//Перезагрузить игру
             }
+        }
+    }
+
+    /// <summary>
+    /// Функция перебирает елементи масива в ктором находятса оружия корабля
+    /// и находит оружия  с типом WeaponType.none
+    /// </summary>
+    /// <returns>Возвращает оружие в которого тип WeaponType.none</returns>
+    Weapon GetEmptyWeaponSlot()
+    {
+        for(int i =0;i<weapons.Length; i++)//Обойти все елементи(оружия) масива
+        {
+            if(weapons[i].type == WeaponType.none)//Проверить если тип оружия равно WeaponType.none
+            {
+                return (weapons[i]);//Возвращать оружие в которого тип WeaponType.none
+            }
+        }
+        return (null);//Возвращать null если нет оружия с типом WeaponType.none
+    }
+
+    /// <summary>
+    /// Функция убирает оружие у всего корабля, 
+    /// то есть присваивает WeaponType.none
+    /// </summary>
+    void ClearWeapons()
+    {
+        foreach(Weapon w in weapons)//Перебирает все елементи масива weapons
+        {
+            w.SetType(WeaponType.none);//Присваивает каждому елементу тип WeaponType.none
         }
     }
 }
