@@ -78,11 +78,20 @@ public class Main : MonoBehaviour
         //Снова вызвать SpawnEnemy()
         Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
     }
+
+    /// <summary>
+    /// Перезагружает сцену через определённое количество времени
+    /// </summary>
+    /// <param name="delay"></param>
     public void DelayedRestart(float delay)
     {
         //  Вызвать метод Restart() через delay секунд
         Invoke("Restart", delay);
     }
+
+    /// <summary>
+    /// Перезагружает сцену
+    /// </summary>
     public void Restart()
     {
         SceneManager.LoadScene("SampleScene");
