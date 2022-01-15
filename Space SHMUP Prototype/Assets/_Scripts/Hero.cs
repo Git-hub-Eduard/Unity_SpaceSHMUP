@@ -108,6 +108,11 @@ public class Hero : MonoBehaviour
             shieldLevel--;//Уменьшить уровень защиты на 1
             Destroy(go);//Уничтожить врага
         }
+        else if(go.tag == "ProjectileEnemy")//Проверить если это вражеский снаряд
+        {
+            shieldLevel--;//Уменшить уровень защиты 
+            Destroy(go);//Уничтожить снаряд
+        }
         else if(go.tag == "PowerUp")//Проверить если игровой объект с которым столкнулся игрок являетса ли он бонусом
         {
             AbsorpPowerUp(go);

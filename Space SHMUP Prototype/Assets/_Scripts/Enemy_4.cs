@@ -19,6 +19,8 @@ public class Part
     public GameObject go;//Игровой объект этой части 
     [HideInInspector]
     public Material mat;// Материал для отображения повреждений
+
+    
 }
 /// <summary>
 /// Enemy_4 создаетса за верхней границей, выбирает случайную точку  на экране 
@@ -32,6 +34,10 @@ public class Enemy_4 : Enemy
     private Vector3 p0, p1;//Две точки для интерполции 
     private float timeStart;//Время создания этого корабля 
     private float duration = 4;//Продолжительность перемещения 
+    //Создание нового делегата 
+    public delegate void WeaponEnemyDelegate();
+    //Создать поле типа WeaponEnemyDelegate с именем fireEnemy
+    public WeaponEnemyDelegate fireEnemy;
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +82,7 @@ public class Enemy_4 : Enemy
         if(u >= 1)
         {
             InitMovement();
+            fireEnemy();
             u = 0;
         }
         u = 1 - Mathf.Pow(1 - u, 2);//Применить плавное замедление

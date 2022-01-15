@@ -742,25 +742,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43389a4f37dea3f46ad3c9e6ed11ae15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  to_repeat: 0
   prefabEnemies:
-  - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-  - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-  - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-  - {fileID: 7023483623033923534, guid: b3adff3254044944e85f22594ad0931a, type: 3}
-  - {fileID: 7023483623033923534, guid: b3adff3254044944e85f22594ad0931a, type: 3}
-  - {fileID: 6104190400188894032, guid: c732bbc8ed3fe7a48b1b1b8a08cde54e, type: 3}
-  - {fileID: 6104190400188894032, guid: c732bbc8ed3fe7a48b1b1b8a08cde54e, type: 3}
-  - {fileID: 7599586234096903836, guid: e90493bff29684844a8562bbf452119a, type: 3}
-  - {fileID: 7599586234096903836, guid: e90493bff29684844a8562bbf452119a, type: 3}
   - {fileID: 2025104793761549846, guid: d6a2c31ee6328104db6ff7a70d9c1119, type: 3}
-  enemySpawnPerSecond: 0.4
+  enemySpawnPerSecond: 0.3
   enemyDefaultPadding: 1.5
   weaponDefinions:
   - type: 1
     letter: B
     color: {r: 0.8396226, g: 0.14574578, b: 0.14574578, a: 1}
     projectilePefab: {fileID: 4029941863120307467, guid: e9fe7a618a9634840af2df239d4678fb, type: 3}
-    projectileColor: {r: 0.8392157, g: 0.14509805, b: 0.14509805, a: 1}
+    projectileColor: {r: 1, g: 0, b: 0.045612335, a: 1}
     damageOnHit: 2
     continuousDamage: 0
     delayBetwenshots: 0.2

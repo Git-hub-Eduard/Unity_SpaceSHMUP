@@ -59,6 +59,7 @@
     <Compile Include="Assets\_Scripts\Enemy.cs" />
     <Compile Include="Assets\_Scripts\Enemy_1.cs" />
     <Compile Include="Assets\_Scripts\Shield.cs" />
+    <Compile Include="Assets\_Scripts\Parallax.cs" />
     <Compile Include="Assets\_Scripts\Projectile.cs" />
     <Compile Include="Assets\_Scripts\Weapon.cs" />
     <Compile Include="Assets\_Scripts\Enemy_3.cs" />
@@ -69,7 +70,7 @@
     <Compile Include="Assets\_Scripts\BoundsCheck.cs" />
     <Compile Include="Assets\_Scripts\PowerUp.cs" />
     <Compile Include="Assets\_Scripts\Utils.cs" />
-    <Compile Include="Assets\_Scripts\Parallax.cs" />
+    <Compile Include="Assets\_Scripts\EnemyWeapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Materials\UnlitAlpha.shader" />

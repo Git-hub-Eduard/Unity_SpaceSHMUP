@@ -35,6 +35,10 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);//Уничтожить снаряд
         }
+        if(bndCheck.offDown)// Если пересёк нижнюю границу экрана
+        {
+            Destroy(gameObject);//Уничтожить снаряд
+        }
     }
 
     /// <summary>

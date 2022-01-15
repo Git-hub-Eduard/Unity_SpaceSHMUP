@@ -14,12 +14,18 @@ public class Enemy_1 : Enemy
     private float x0;// начальное значение кординат
     private float birthTime;
 
+    private float lastShot;//Время последнего выстрела
+    WeaponDefinion def;//Свойства оружия 
+    public float projSpeed = 30;//Скорость снаряда
+    WeaponType type = WeaponType.blaster;//тип оружия
     // Метод страт Start() потому что не используетса супер класом Enemy
     void Start()
     {
         // Установить начальную позицию координат х объекта Enemy_1
         x0 = pos.x;
         birthTime = Time.time;
+        //Добуть свойства оружия для бластера
+        def = Main.GetWeaponDefinion(type);
     }
     //Переопределить  функцию Move суперкласса Enemy
     public override void Move()
@@ -34,9 +40,31 @@ public class Enemy_1 : Enemy
         //Повернуть немного относительно оси  Y
         Vector3 rot = new Vector3(0, sin * waveRotY, 0);
         this.transform.rotation = Quaternion.Euler(rot);
+
+
+        if ((Time.time - lastShot) > waveFrequency)//Проверить если время с момента последнего выстрела больше за waveFrequency
+        {
+            FireEnemy();//Стрелять
+        }
+        
+        
         //
         // Движение по оси y
         base.Move();
+    }
+    /// <summary>
+    /// Функция стрельбы врага
+    /// </summary>
+    void FireEnemy()
+    {
+        GameObject go = Instantiate<GameObject>(def.projectilePefab);//Создать снаряд за типом оружия 
+        go.tag = "ProjectileEnemy";//имя тега
+        go.layer = LayerMask.NameToLayer("ProjectileEnemy");//имя слоя
+        go.transform.position = transform.position;//установить координаты 
+        Projectile enem = go.GetComponent<Projectile>();
+        enem.type = type;//установить тип снаряда
+        enem.rigid.velocity = Vector3.down * projSpeed;//придать ускорение снаряда
+        lastShot = Time.time;//записать время последнего выстрела
     }
 
 }

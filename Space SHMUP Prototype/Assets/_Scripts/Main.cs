@@ -8,6 +8,7 @@ public class Main : MonoBehaviour
     static public Main S;// объект одиночка
     static Dictionary<WeaponType, WeaponDefinion> WEAP_DICT;// объявление словаря
     [Header("Set in Inspector")]
+    public bool to_repeat = true;//Генерировать несколько тоесть true или только 1 - false
     public GameObject[] prefabEnemies;// Масив шадлонов Enemy
     public float enemySpawnPerSecond = 0.5f;// Создание вражеских кораблей за еденицу времени
     public float enemyDefaultPadding = 1.5f;
@@ -75,8 +76,12 @@ public class Main : MonoBehaviour
         pos.x = Random.Range(xMin, xMax);//Выбрать случайную координату между xMin и xMax включительно
         pos.y = bndCheck.camHeight + enemyPadding;// Определить высоту на которой может находитса объект
         go.transform.position = pos;//Расположить объект на заданые координаты pos
-        //Снова вызвать SpawnEnemy()
-        Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
+        if(to_repeat)
+        {
+            //Снова вызвать SpawnEnemy()
+            Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
+        }
+        
     }
 
     /// <summary>
