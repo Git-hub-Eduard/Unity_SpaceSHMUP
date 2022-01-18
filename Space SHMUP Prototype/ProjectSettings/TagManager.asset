@@ -10,6 +10,7 @@ TagManager:
   - ProjectileEnemy
   - PowerUp
   - PowerUpBox
+  - Rocket
   layers:
   - Default
   - TransparentFX

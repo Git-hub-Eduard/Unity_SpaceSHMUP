@@ -108,6 +108,10 @@ public class Enemy : MonoBehaviour
                 }
                 Destroy(otherGO);//”ничтожить снар€д
                 break;
+            case "Rocket":
+                print("Boom");
+                Destroy(otherGO);
+                break;
             default:
                 print("Enemy hit by non-Projectile " + otherGO.name);
                 break;

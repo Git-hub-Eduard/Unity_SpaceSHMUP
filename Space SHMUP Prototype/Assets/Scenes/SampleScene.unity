@@ -742,9 +742,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43389a4f37dea3f46ad3c9e6ed11ae15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  to_repeat: 0
+  to_repeat: 1
   prefabEnemies:
-  - {fileID: 2025104793761549846, guid: d6a2c31ee6328104db6ff7a70d9c1119, type: 3}
+  - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
   enemySpawnPerSecond: 0.3
   enemyDefaultPadding: 1.5
   weaponDefinions:
@@ -775,6 +775,15 @@ MonoBehaviour:
     continuousDamage: 0
     delayBetwenshots: 0
     velocity: 0
+  - type: 4
+    letter: M
+    color: {r: 1, g: 0.47641194, b: 0, a: 1}
+    projectilePefab: {fileID: 0}
+    projectileColor: {r: 1, g: 0.4745098, b: 0, a: 1}
+    damageOnHit: 5
+    continuousDamage: 0
+    delayBetwenshots: 1
+    velocity: 30
   prefabPowerUp: {fileID: 1591704216894369630, guid: e623358a55c541c4c9ee5d5cd2bead3e, type: 3}
   powerUpFrequency: 01000000010000000200000006000000
 --- !u!114 &963194230
@@ -1033,6 +1042,7 @@ MonoBehaviour:
   pitchMult: 30
   RestartDelay: 2
   projectilePrefab: {fileID: 4029941863120307467, guid: e9fe7a618a9634840af2df239d4678fb, type: 3}
+  missilePrefab: {fileID: 5873260199254687069, guid: a34a9ee28f14bf24a9eb4daacd289d31, type: 3}
   projectileSpeed: 40
   weapons:
   - {fileID: 1197322203}

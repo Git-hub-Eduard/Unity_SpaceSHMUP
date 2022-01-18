@@ -12,6 +12,7 @@ public class Hero : MonoBehaviour
     public float pitchMult = 30;//Поворот корабля по оси У
     public float RestartDelay = 2f;//Через сколько перезагрузить игру
     public GameObject projectilePrefab;//Шаблон снаряда
+    public GameObject missilePrefab;//Шаблон ракеты 
     public float projectileSpeed = 40;//Скорость снаряда 
     public Weapon[] weapons;//Масив будет хранить ссылки на каждое оружие
     [Header("Set Dynamically")]
@@ -77,6 +78,11 @@ public class Hero : MonoBehaviour
         {
             //Если была нажата клавиша то Input.GetAxis("Jump") вернёт 1
             fireDelegate();//вызов делегата  к кторой подключон метод  TempFire
+            
+        }
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            CreateRocket();
         }
     }
    /* void TempFire()
@@ -91,6 +97,15 @@ public class Hero : MonoBehaviour
         // И в нём находим параметр скорости снаряда velocity
         rigidB.velocity = Vector3.up * tSpeed;//Дать снаряду ускорение через Rigidbody.velocity снапяда
     }*/
+
+    /// <summary>
+    /// Функция что создает ракету
+    /// </summary>
+    void CreateRocket()
+    {
+        GameObject missile = Instantiate<GameObject>(missilePrefab);
+        missile.transform.position = transform.position;
+    }
     void OnTriggerEnter(Collider other)//Срабатывает при столкновении колайдера игрока с другими объектами 
     {
         Transform rootT = other.gameObject.transform.root;//Передать компонент Transform объекта родителя
