@@ -108,9 +108,34 @@ public class Enemy : MonoBehaviour
                 }
                 Destroy(otherGO);//Уничтожить снаряд
                 break;
-            case "Rocket":
+            case "Rocket"://Если столкнулся с ракетой 
+                Rocket r = otherGO.GetComponent<Rocket>();//Добуть компонент Rocket(код) игрового объекта
+                //Если вражеский корабль за границами экрана
+                //Не наносить ему повреждений
+
+                if (!bndCheck.isOnScreen)
+                {
+                    Destroy(otherGO);//Уничтожить снаряд
+                    break;
+                }
+
+                //Поразить вражеский корабль
+                ShowDamage();//Отобразить попадание
+                //Получить разрушающую силу ракеты в класе Main
+                health -= Main.GetWeaponDefinion(r.type).damageOnHit;
+                if (health <= 0)
+                {
+                    //Сообщить Main про уничтожение корабля
+                    if (!notifiedOfDestruction)
+                    {
+                        Main.S.ShipDestroyed(this);//Создать бонус
+                    }
+                    notifiedOfDestruction = true;
+                    //Если жизни меньше чем 0 уничтожить врага
+                    Destroy(this.gameObject);
+                }
                 print("Boom");
-                Destroy(otherGO);
+                Destroy(otherGO);//Уничтожить снаряд
                 break;
             default:
                 print("Enemy hit by non-Projectile " + otherGO.name);

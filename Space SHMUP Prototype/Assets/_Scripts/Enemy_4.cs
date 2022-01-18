@@ -214,6 +214,64 @@ public class Enemy_4 : Enemy
                 }
                 Destroy(other);//Уничтожить снаряд
                 break;
+            case "Rocket":
+                Rocket r = other.GetComponent<Rocket>();
+                if (!bndCheck.isOnScreen)
+                {
+                    Destroy(other);
+                    break;
+                }
+                //Поразить вражеский корабль
+                GameObject _goHit = coll.contacts[0].thisCollider.gameObject;
+                Part _prtHit = FindPart(_goHit);
+                if (_prtHit == null)
+                {
+                    goHit = coll.contacts[0].otherCollider.gameObject;
+                    prtHit = FindPart(goHit);
+                }
+                //Проверить защищена ли эта часть корабля 
+                if (_prtHit.protectedBy != null)
+                {
+                    foreach (string s in _prtHit.protectedBy)
+                    {
+                        //Если хотябы одна из частей ещё не разрушена 
+                        if (!Destroyed(s))
+                        {
+                            //Не наносить повреждения этой части 
+                            Destroy(other);
+                            return;
+                        }
+                    }
+                }
+                //Эта часть не защищена, нанести ей повреждения
+                //Получить разрушеную силу
+                _prtHit.health -= Main.GetWeaponDefinion(r.type).damageOnHit;
+                //Показать эффект попадания в часть 
+                ShowLocalizedDamage(_prtHit.mat);
+                if (_prtHit.health <= 0)
+                {
+                    //Вместо разрушения всего корабля 
+                    //Деактивировать уничтоженную часть
+                    _prtHit.go.SetActive(false);
+                }
+                //Проверить был ли корабльполностю разрушен 
+                bool _allDestroyed = true;//Предположить что разрушен
+                foreach (Part prt in parts)
+                {
+                    if (!Destroyed(prt))//Если какае-то часть еще уцелела
+                    {
+                        allDestroyed = false;
+                        break;
+                    }
+                }
+                if (_allDestroyed)
+                {
+                    Main.S.ShipDestroyed(this);
+                    //Уничтожить этот объект 
+                    Destroy(this.gameObject);
+                }
+                Destroy(other);//Уничтожить снаряд
+                break;
         }
     }
 }

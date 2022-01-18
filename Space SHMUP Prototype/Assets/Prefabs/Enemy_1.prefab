@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   fireRate: 0.3
-  health: 4
+  health: 10
   score: 100
   showDamageDuration: 0.1
   powerUpDropChance: 0.5
@@ -172,7 +172,7 @@ MonoBehaviour:
   waveFrequency: 2
   waveWidth: 4
   waveRotY: 45
-  prijectileEnemy: {fileID: 4029941863120307467, guid: e9fe7a618a9634840af2df239d4678fb, type: 3}
+  projSpeed: 30
 --- !u!114 &-5223196365427121445
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Hero : MonoBehaviour
 {
@@ -11,14 +12,19 @@ public class Hero : MonoBehaviour
     public float rollMult = -45;//Поворот кооабля по оси Х
     public float pitchMult = 30;//Поворот корабля по оси У
     public float RestartDelay = 2f;//Через сколько перезагрузить игру
-    public GameObject projectilePrefab;//Шаблон снаряда
-    public GameObject missilePrefab;//Шаблон ракеты 
+    //public GameObject projectilePrefab;//Шаблон снаряда
+    public int missileSize = 0;//Количество ракет
+    private float missileTime = 0;//Время последнего выстрела
+    private WeaponDefinion def;//Свойства ракеты 
     public float projectileSpeed = 40;//Скорость снаряда 
     public Weapon[] weapons;//Масив будет хранить ссылки на каждое оружие
     [Header("Set Dynamically")]
     [SerializeField]
     private float _shieldLevel = 1;
-    private GameObject lastTriggerGo = null;//переменная хранит ссылку на последний столкнувшийся игровой объект  
+    private GameObject lastTriggerGo = null;//переменная хранит ссылку на последний столкнувшийся игровой объект
+
+    //Интерфейс
+    public Text MissileText;//Для изображения количества ракет
 
     //Объявление нового делегата WeaponFireDelegate
     public delegate void WeaponFireDelegate();
@@ -34,10 +40,11 @@ public class Hero : MonoBehaviour
        {
            Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");// Прописать ошибку если создан ещё один экземпляр Hero S
        }
-        // fireDelegate += TempFire;//добавить TempFire в fireDelegate, благодаря чему TempFire будет вызыватса при каждом вызове fireDelegate
-        // Очистить массив weapons и начать игру с 1 бластером
-        ClearWeapons();
-        weapons[0].SetType(WeaponType.blaster);
+       def = Main.GetWeaponDefinion(WeaponType.missile);
+       UI_Updaye();//Обновить интерфейс
+       // Очистить массив weapons и начать игру с 1 бластером
+       ClearWeapons();
+       weapons[0].SetType(WeaponType.blaster);
     }
     // Update is called once per frame
     void Update()
@@ -80,31 +87,43 @@ public class Hero : MonoBehaviour
             fireDelegate();//вызов делегата  к кторой подключон метод  TempFire
             
         }
-        if(Input.GetKeyDown(KeyCode.F))
+        if(Input.GetKeyDown(KeyCode.LeftAlt))//Если игрок нажал кнопку F
         {
-            CreateRocket();
+            CreateRocket();//Создать ракету
         }
     }
-   /* void TempFire()
-    {
-        GameObject projGO = Instantiate<GameObject>(projectilePrefab);//Создать снаряд
-        projGO.transform.position = transform.position;//Установить кординаты что и у корабля 
-        Rigidbody rigidB = projGO.GetComponent<Rigidbody>();// Получить компонент Rigidbody у снаряда
-        // rigidB.velocity = Vector3.up * projectileSpeed;// Дать снаряду ускорения
-        Projectile proj = projGO.GetComponent<Projectile>();//Получить сылку на клас Projectile из снаряда 
-        proj.type = WeaponType.blaster;// Изменить тип оружия для снаряда на blaster
-        float tSpeed = Main.GetWeaponDefinion(proj.type).velocity;//Находим соотвецтвующий экхемпяр WeaponDefinion для типа оружия proj.type
-        // И в нём находим параметр скорости снаряда velocity
-        rigidB.velocity = Vector3.up * tSpeed;//Дать снаряду ускорение через Rigidbody.velocity снапяда
-    }*/
+  
 
     /// <summary>
     /// Функция что создает ракету
     /// </summary>
     void CreateRocket()
     {
-        GameObject missile = Instantiate<GameObject>(missilePrefab);
-        missile.transform.position = transform.position;
+        if(missileSize == 0)//Если количество ракет равно 0
+        {
+            return;
+        }
+        else if((Time.time-missileTime)<def.delayBetwenshots)//Проверить прошло ли достаточно времени что было дозволено создать ракету
+        {
+            return;
+        }
+        else
+        {
+            GameObject missile = Instantiate<GameObject>(def.projectilePefab);//Создать ракету 
+            missile.transform.position = transform.position;//Расположить на месте корабля 
+            missileSize--;//отнять количество ракет
+            UI_Updaye();//Обновить интерфейс
+            missileTime = Time.time;
+        }
+       
+    }
+
+    /// <summary>
+    /// Функция для обновления интерфейса
+    /// </summary>
+    public void UI_Updaye()
+    {
+        MissileText.text = "M: " + missileSize;
     }
     void OnTriggerEnter(Collider other)//Срабатывает при столкновении колайдера игрока с другими объектами 
     {
@@ -149,6 +168,11 @@ public class Hero : MonoBehaviour
         {
             case WeaponType.shield://Если тип бонуса щит 
                 shieldLevel++;//Прибавить к щиту 1
+                break;
+            case WeaponType.missile:
+                missileSize = missileSize+2;//Добавить 2 ракеты
+                UI_Updaye();//Обновить интерфейс
+                print("Добавлена ракета = " + missileSize);
                 break;
             default:
                 if(pu.type == weapons[0].type)
