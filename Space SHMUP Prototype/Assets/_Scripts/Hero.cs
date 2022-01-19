@@ -23,6 +23,9 @@ public class Hero : MonoBehaviour
     private float _shieldLevel = 1;
     private GameObject lastTriggerGo = null;//переменная хранит ссылку на последний столкнувшийся игровой объект
 
+    //еффекты 
+    public GameObject effectParticles;//Игровой объект частици
+
     //Интерфейс
     public Text MissileText;//Для изображения количества ракет
 
@@ -40,6 +43,7 @@ public class Hero : MonoBehaviour
        {
            Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");// Прописать ошибку если создан ещё один экземпляр Hero S
        }
+       
        def = Main.GetWeaponDefinion(WeaponType.missile);
        UI_Updaye();//Обновить интерфейс
        // Очистить массив weapons и начать игру с 1 бластером
@@ -57,6 +61,17 @@ public class Hero : MonoBehaviour
          * Если нажать кнопку то  в yAxis запишет -1 и 1, в низ или вверх
          */
 
+        if(Input.GetAxis("Horizontal") !=0)//Проверить нажата ли кнопка  в лево или в право
+        {
+            Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
+           
+        }
+        if(Input.GetAxis("Vertical") !=0)//Проверить нажата ли кнопка  в низ или в верх
+        {
+            Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
+            
+        }
+       
         //Изменить transform.position, опираясь на информацию по осям 
         Vector3 pos = transform.position;// записать текущии координаты корабля 
         pos.x += xAxis * speed * Time.deltaTime;//Записать координаты перемещения

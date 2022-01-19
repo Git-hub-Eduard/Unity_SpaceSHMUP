@@ -21,6 +21,9 @@ public class Enemy : MonoBehaviour
     public bool notifiedOfDestruction = false;// Ѕудет использоватса позже - когда нада збросить бонус
     protected BoundsCheck bndCheck;// —сылка на компонент BoundsCheck, что подключон к этому игровому объекту
     //Ёто свойство: метод, действующий как поле
+
+    //Ёффекты
+    public GameObject MissileBoomParticals;//частици взрива ракеты
     public Vector3 pos
     {
         get
@@ -135,6 +138,7 @@ public class Enemy : MonoBehaviour
                     Destroy(this.gameObject);
                 }
                 print("Boom");
+                Instantiate(MissileBoomParticals, transform.position, Quaternion.identity);//—оздать взрив
                 Destroy(otherGO);//”ничтожить снар€д
                 break;
             default:

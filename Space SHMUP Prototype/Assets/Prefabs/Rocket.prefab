@@ -139,6 +139,7 @@ MonoBehaviour:
     velocity: 20
   colorMissile: {fileID: 0}
   rotatespeed: 200
+  particleMissile: {fileID: 5275932902757544216, guid: e622ed45da11bfe4599c11b0fd46a705, type: 3}
 --- !u!1 &5873260199265375069
 GameObject:
   m_ObjectHideFlags: 0

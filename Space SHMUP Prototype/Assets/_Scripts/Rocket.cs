@@ -9,6 +9,9 @@ public class Rocket : MonoBehaviour
     public Renderer colorMissile;//компонент Renderer
     private Rigidbody rigidMissile;// Компонент Missile
     public float rotatespeed = 200f;//скорость поворота
+
+    //Эффекты 
+    public GameObject particleMissile;//эффекты частиц ракеты
     // Start is called before the first frame update
     void Awake()
     {
@@ -22,6 +25,7 @@ public class Rocket : MonoBehaviour
     void Update()
     {
         rigidMissile.velocity = Vector3.up * def.velocity;//Дать ракете ускорение вверх
+        Instantiate(particleMissile, transform.position, Quaternion.identity);//Создать частицу
         GameObject target = GameObject.FindGameObjectWithTag("Enemy");//Найти игровой объект Enemy
         if (target == null)//Если его нет
         {
