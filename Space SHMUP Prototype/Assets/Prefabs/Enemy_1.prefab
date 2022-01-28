@@ -169,6 +169,7 @@ MonoBehaviour:
   showingDamage: 0
   damageDoneTime: 0
   notifiedOfDestruction: 0
+  MissileBoomParticals: {fileID: 5275932902757544216, guid: ef9990eee8e6aad47a9ace22d548a45d, type: 3}
   waveFrequency: 2
   waveWidth: 4
   waveRotY: 45

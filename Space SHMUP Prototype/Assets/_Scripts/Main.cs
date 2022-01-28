@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class Wave
+{
+    public GameObject[] EnemyPrefabs;//Виды врагов на волне
+    public int sizeWave; // Количество врагов
+}
 public class Main : MonoBehaviour
 {
     static public Main S;// объект одиночка
     static Dictionary<WeaponType, WeaponDefinion> WEAP_DICT;// объявление словаря
     [Header("Set in Inspector")]
-    public bool to_repeat = true;//Генерировать несколько тоесть true или только 1 - false
-    public GameObject[] prefabEnemies;// Масив шадлонов Enemy
     public float enemySpawnPerSecond = 0.5f;// Создание вражеских кораблей за еденицу времени
     public float enemyDefaultPadding = 1.5f;
     //Отступ для позиционирования.
     public WeaponDefinion[] weaponDefinions;// Масив оржия
+    //Бонусы
     public GameObject prefabPowerUp;//шаблон для всех бонусов
     public WeaponType[] powerUpFrequency = new WeaponType[] { WeaponType.blaster, WeaponType.blaster, WeaponType.spread, WeaponType.shield };
     /*
      * powerUpFrequency - масив типов оружия для бонусов
      */
+    //Волны
+    public Wave[] Level;//Масив волн
     private BoundsCheck bndCheck;
     /// <summary>
     /// Данный метод создает бонус на месте уничтоженого корабля
@@ -48,8 +55,8 @@ public class Main : MonoBehaviour
         S = this;
         //Записать в  bndCheck ссылку на компонент BoundsCheck
         bndCheck = GetComponent<BoundsCheck>();
-        //Вызвать SpawnEnemy
-        Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
+        //Вызвать Scenary()
+        StartCoroutine(Scenary());
 
         //Словарь с ключами типа WeaponType
         WEAP_DICT = new Dictionary<WeaponType, WeaponDefinion>();//Инициализировать словарь
@@ -58,14 +65,31 @@ public class Main : MonoBehaviour
             WEAP_DICT[def.type] = def;//Записать в словарь елмент что соотвецтвует его типу вооружения 
         }
     }
-    public void SpawnEnemy()
+
+    /// <summary>
+    /// Функция что отвечает за перебор появление врагов по волнам
+    /// </summary>
+   IEnumerator Scenary()
+   {
+        foreach(Wave spawnWave in Level)//Перебрать все волны из масива Level
+        {
+            for(int i = 0; i<spawnWave.sizeWave; i++)//Через цикл вызывать _SpawnEnemy с задержкой WaitForSeconds(1f / enemySpawnPerSecond);
+            {
+                //Создать spawnWave.sizeWave(количество врагов на волне) врагов в волне
+                yield return new WaitForSeconds(1f / enemySpawnPerSecond);//подождать 1f / enemySpawnPerSecond
+                _SpawnEnemy(spawnWave);//Создать врага
+            }
+        }
+    }
+
+    void _SpawnEnemy(Wave spawnWave)
     {
         // Выбрать случайный шаблон Enemy для создания 
-        int ndx = Random.Range(0, prefabEnemies.Length);//выбрать сулчайный шаблон 
-        GameObject go = Instantiate<GameObject>(prefabEnemies[ndx]);// создать объект из масива prefabEnemies под индексом ndx
+        int ndx = Random.Range(0, spawnWave.EnemyPrefabs.Length);//выбрать сулчайный шаблон 
+        GameObject go = Instantiate<GameObject>(spawnWave.EnemyPrefabs[ndx]);// создать объект из масива prefabEnemies под индексом ndx
         //Разместить вражеский корабль над экраном в случайной позиции х
         float enemyPadding = enemyDefaultPadding;// записать enemyPadding начальный отступ от границ
-        if (go.GetComponent<BoundsCheck>()!= null)//Проверить есть ли у объекта компонент BoundsCheck 
+        if (go.GetComponent<BoundsCheck>() != null)//Проверить есть ли у объекта компонент BoundsCheck 
         {
             //Если есть записать в enemyPadding  - radius собственный параметр компонента  
             enemyPadding = Mathf.Abs(go.GetComponent<BoundsCheck>().radius);
@@ -76,13 +100,8 @@ public class Main : MonoBehaviour
         pos.x = Random.Range(xMin, xMax);//Выбрать случайную координату между xMin и xMax включительно
         pos.y = bndCheck.camHeight + enemyPadding;// Определить высоту на которой может находитса объект
         go.transform.position = pos;//Расположить объект на заданые координаты pos
-        if(to_repeat)
-        {
-            //Снова вызвать SpawnEnemy()
-            Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
-        }
-        
     }
+  
 
     /// <summary>
     /// Перезагружает сцену через определённое количество времени
