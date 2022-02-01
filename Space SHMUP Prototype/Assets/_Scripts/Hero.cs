@@ -18,6 +18,7 @@ public class Hero : MonoBehaviour
     private WeaponDefinion def;//Свойства ракеты 
     public float projectileSpeed = 40;//Скорость снаряда 
     public Weapon[] weapons;//Масив будет хранить ссылки на каждое оружие
+    public GameObject[] Turrets;//Масив турелей
     [Header("Set Dynamically")]
     [SerializeField]
     private float _shieldLevel = 1;
@@ -48,6 +49,7 @@ public class Hero : MonoBehaviour
        UI_Updaye();//Обновить интерфейс
        // Очистить массив weapons и начать игру с 1 бластером
        ClearWeapons();
+       ClearTurrets();
        weapons[0].SetType(WeaponType.blaster);
     }
     // Update is called once per frame
@@ -187,7 +189,9 @@ public class Hero : MonoBehaviour
             case WeaponType.missile:
                 missileSize = missileSize+2;//Добавить 2 ракеты
                 UI_Updaye();//Обновить интерфейс
-                print("Добавлена ракета = " + missileSize);
+                break;
+            case WeaponType.turret:
+                AddTuretSlot();
                 break;
             default:
                 if(pu.type == weapons[0].type)
@@ -254,6 +258,34 @@ public class Hero : MonoBehaviour
         foreach(Weapon w in weapons)//Перебирает все елементи масива weapons
         {
             w.SetType(WeaponType.none);//Присваивает каждому елементу тип WeaponType.none
+        }
+    }
+
+
+    /// <summary>
+    /// Очищает все слоты турелей
+    /// </summary>
+    void ClearTurrets()
+    {
+        foreach(GameObject go in Turrets)
+        {
+            go.SetActive(false);
+        }
+    }
+
+
+    /// <summary>
+    /// Добавляет слот для турели
+    /// </summary>
+    void AddTuretSlot()
+    {
+        foreach(GameObject go in Turrets)
+        {
+            if(go.activeSelf == false)
+            {
+                go.SetActive(true);
+                return;
+            }
         }
     }
 }

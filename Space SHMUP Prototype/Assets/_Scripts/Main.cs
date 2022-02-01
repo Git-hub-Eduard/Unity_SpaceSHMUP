@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Wave
@@ -17,6 +18,7 @@ public class Main : MonoBehaviour
     public float enemySpawnPerSecond = 0.5f;// Создание вражеских кораблей за еденицу времени
     public float enemyDefaultPadding = 1.5f;
     //Отступ для позиционирования.
+    [Header("Оружия и бонусы")]
     public WeaponDefinion[] weaponDefinions;// Масив оржия
     //Бонусы
     public GameObject prefabPowerUp;//шаблон для всех бонусов
@@ -25,7 +27,12 @@ public class Main : MonoBehaviour
      * powerUpFrequency - масив типов оружия для бонусов
      */
     //Волны
+    [Header("Настройка волн")]
     public Wave[] Level;//Масив волн
+    
+    [Header("Текст сообщения волн")]
+    private Animator anim_Wave;//Анимация надпсии что сообщает про появление новой волны
+    public Text wave_text;
     private BoundsCheck bndCheck;
     /// <summary>
     /// Данный метод создает бонус на месте уничтоженого корабля
@@ -55,9 +62,9 @@ public class Main : MonoBehaviour
         S = this;
         //Записать в  bndCheck ссылку на компонент BoundsCheck
         bndCheck = GetComponent<BoundsCheck>();
+        anim_Wave = wave_text.GetComponent<Animator>();
         //Вызвать Scenary()
         StartCoroutine(Scenary());
-
         //Словарь с ключами типа WeaponType
         WEAP_DICT = new Dictionary<WeaponType, WeaponDefinion>();//Инициализировать словарь
         foreach(WeaponDefinion def in weaponDefinions)
@@ -73,7 +80,10 @@ public class Main : MonoBehaviour
    {
         foreach(Wave spawnWave in Level)//Перебрать все волны из масива Level
         {
-            for(int i = 0; i<spawnWave.sizeWave; i++)//Через цикл вызывать _SpawnEnemy с задержкой WaitForSeconds(1f / enemySpawnPerSecond);
+            anim_Wave.SetBool("IsWave", true);
+            yield return new WaitForSeconds(2.5f);
+            anim_Wave.SetBool("IsWave", false);
+            for (int i = 0; i<spawnWave.sizeWave; i++)//Через цикл вызывать _SpawnEnemy с задержкой WaitForSeconds(1f / enemySpawnPerSecond);
             {
                 //Создать spawnWave.sizeWave(количество врагов на волне) врагов в волне
                 yield return new WaitForSeconds(1f / enemySpawnPerSecond);//подождать 1f / enemySpawnPerSecond

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5873260199254687059}
   - component: {fileID: 5873260199254687068}
   - component: {fileID: 6709759827425494095}
+  - component: {fileID: 4847122244522421295}
   m_Layer: 8
   m_Name: Rocket
   m_TagString: Rocket
@@ -140,6 +141,27 @@ MonoBehaviour:
   colorMissile: {fileID: 0}
   rotatespeed: 200
   particleMissile: {fileID: 5275932902757544216, guid: e622ed45da11bfe4599c11b0fd46a705, type: 3}
+--- !u!114 &4847122244522421295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5873260199254687069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5d81831e0b93c4982238416cd235d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: -1
+  keepOnScreen: 0
+  isOnScreen: 1
+  camWidth: 0
+  camHeight: 0
+  offRight: 0
+  offLeft: 0
+  offUp: 0
+  offDown: 0
 --- !u!1 &5873260199265375069
 GameObject:
   m_ObjectHideFlags: 0

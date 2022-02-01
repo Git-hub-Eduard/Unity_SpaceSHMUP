@@ -9,12 +9,13 @@ public class Rocket : MonoBehaviour
     public Renderer colorMissile;//компонент Renderer
     private Rigidbody rigidMissile;// Компонент Missile
     public float rotatespeed = 200f;//скорость поворота
-
+    private BoundsCheck bndCheck;
     //Эффекты 
     public GameObject particleMissile;//эффекты частиц ракеты
     // Start is called before the first frame update
     void Awake()
     {
+        bndCheck = GetComponent<BoundsCheck>();//Добуть компонент BoundsCheck игрового оьъекта Rocket
         rigidMissile = GetComponent<Rigidbody>();//Добуть компонент Rigidbody игрового оьъекта Rocket
         colorMissile = GetComponent<Renderer>();//Добуть компонент Renderer игрового оьъекта Rocket
         def = Main.GetWeaponDefinion(type);//Получить свойства типа оружия 
@@ -39,7 +40,14 @@ public class Rocket : MonoBehaviour
             rigidMissile.angularVelocity = new Vector3(0, 0, -rotate * rotatespeed);//Повернуть в направлении Enemy
             rigidMissile.velocity = duration * def.velocity;//Приследовать цель
         }
-        
-       
+        if (bndCheck.offUp)// Если пересёк вехнюю границу экрана 
+        {
+            Destroy(gameObject);//Уничтожить снаряд
+        }
+        if (bndCheck.offDown)// Если пересёк нижнюю границу экрана
+        {
+            Destroy(gameObject);//Уничтожить снаряд
+        }
+
     }
 }

@@ -137,7 +137,6 @@ public class Enemy : MonoBehaviour
                     //Если жизни меньше чем 0 уничтожить врага
                     Destroy(this.gameObject);
                 }
-                print("Boom");
                 Instantiate(MissileBoomParticals, transform.position, Quaternion.identity);//Создать взрив
                 Destroy(otherGO);//Уничтожить снаряд
                 break;
