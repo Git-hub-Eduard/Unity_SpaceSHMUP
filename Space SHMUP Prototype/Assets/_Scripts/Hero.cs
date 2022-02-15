@@ -24,12 +24,16 @@ public class Hero : MonoBehaviour
     private float _shieldLevel = 1;
     private GameObject lastTriggerGo = null;//переменная хранит ссылку на последний столкнувшийся игровой объект
 
+    [Header("Эфекты")]
     //еффекты 
     public GameObject effectParticles;//Игровой объект частици
 
     //Интерфейс
     public Text MissileText;//Для изображения количества ракет
 
+    [Header("Управление")]
+    public bool IsTouch = false;
+    private bool readyMove;
     //Объявление нового делегата WeaponFireDelegate
     public delegate void WeaponFireDelegate();
     //Создание поле типа WeaponFireDelegate с именем fireDelegate
@@ -55,59 +59,95 @@ public class Hero : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Извлечить информацию из класа Input
-        float xAxis = Input.GetAxis("Horizontal");//собрать ифнормацию при нажатии кнопок лево или в право
-        float yAxis = Input.GetAxis("Vertical");//собрать ифнормацию при нажатии кнопок в низ или в верх
-        /*
-         * Если нажать кнопку то  в xAxis запишет -1 и 1, в лево или в право соответственно
-         * Если нажать кнопку то  в yAxis запишет -1 и 1, в низ или вверх
-         */
+        if (IsTouch)//Если это сенсорное управление
+        {
+            if(Input.touchCount>0)
+            {
+                Touch touch = Input.GetTouch(0);
+                Vector3 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                touchPosition.z = 0f;
+                if (touch.phase == TouchPhase.Began)
+                {
 
-        if(Input.GetAxis("Horizontal") !=0)//Проверить нажата ли кнопка  в лево или в право
-        {
-            Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
-           
+                    if (touchPosition.y<=transform.position.y+5 && touchPosition.y >= transform.position.y - 5 && touchPosition.x<=transform.position.x+4 && touchPosition.x >= transform.position.x-4)
+                    {
+                        print("Попав");
+                        readyMove = true;
+                        
+                    }
+                }
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    if (readyMove)
+                    {
+                       transform.position = touchPosition;
+                       Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
+                    }
+                }
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    readyMove = false;
+                }
+                
+            }
         }
-        if(Input.GetAxis("Vertical") !=0)//Проверить нажата ли кнопка  в низ или в верх
+        else//Если это через клавишы
         {
-            Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
-            
+            //Извлечить информацию из класа Input
+          float xAxis = Input.GetAxis("Horizontal");//собрать ифнормацию при нажатии кнопок лево или в право
+          float yAxis = Input.GetAxis("Vertical");//собрать ифнормацию при нажатии кнопок в низ или в верх
+            /*
+             * Если нажать кнопку то  в xAxis запишет -1 и 1, в лево или в право соответственно
+             * Если нажать кнопку то  в yAxis запишет -1 и 1, в низ или вверх
+             */
+            if (xAxis != 0f || yAxis != 0f)//Проверить нажата ли кнопка  в лево или в право в верх в низ
+            {
+                Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
+            }
+            //Изменить transform.position, опираясь на информацию по осям 
+            Vector3 pos = transform.position;// записать текущии координаты корабля 
+            pos.x += xAxis * speed * Time.deltaTime;//Записать координаты перемещения
+                                                    //объекта по оси Х путьом умножения xAxis * speed * Time.deltaTime
+            pos.y += yAxis * speed * Time.deltaTime;//Записать координаты перемещения
+                                                    //объекта по оси Y путьом умножения yAxis * speed * Time.deltaTime
+            transform.position = pos;//переместить корабль в только что записаные координати
+            transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
+            /*
+             * Строка transform.rotation... сообщает объекту под каким углом наклонять корабль при движении
+             * Функция Quaternion.Euler - 1 переменная  - поварачивает корабль, когда он двигаетса   вверх или вниз, по оси Х
+             * Функция Quaternion.Euler - 2 переменная - поварачивает корабль когда он двигаетса влево или в право, по оси У 
+             */
         }
-       
-        //Изменить transform.position, опираясь на информацию по осям 
-        Vector3 pos = transform.position;// записать текущии координаты корабля 
-        pos.x += xAxis * speed * Time.deltaTime;//Записать координаты перемещения
-                                                //объекта по оси Х путьом умножения xAxis * speed * Time.deltaTime
-        pos.y += yAxis * speed * Time.deltaTime;//Записать координаты перемещения
-                                                //объекта по оси Y путьом умножения yAxis * speed * Time.deltaTime
-        transform.position = pos;//переместить корабль в только что записаные координати
-        transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
-        /*
-         * Строка transform.rotation... сообщает объекту под каким углом наклонять корабль при движении
-         * Функция Quaternion.Euler - 1 переменная  - поварачивает корабль, когда он двигаетса   вверх или вниз, по оси Х
-         * Функция Quaternion.Euler - 2 переменная - поварачивает корабль когда он двигаетса влево или в право, по оси У 
-         */
+
 
         //Позволить кораблю выстрелить 
         // if(Input.GetKeyDown(KeyCode.Space))// При нажатии пробела стрелять
         // {
         //     TempFire();
         //}
-
-        //Произвести выстрел из всех видов оружия вызовом fireDelegate
-        //Сначала произвести нажатие клавиши Axis("Jump")
-        //Затем убедитса что fireDelegate не равно null
-        //Чтобы избежать ошибки 
-        if(Input.GetAxis("Jump") == 1 && fireDelegate != null)
+        if (IsTouch)
         {
-            //Если была нажата клавиша то Input.GetAxis("Jump") вернёт 1
-            fireDelegate();//вызов делегата  к кторой подключон метод  TempFire
-            
-        }
-        if(Input.GetKeyDown(KeyCode.LeftAlt))//Если игрок нажал кнопку F
-        {
+            fireDelegate();//вызов делегата  к кторой подключон метод  TempFire       
             CreateRocket();//Создать ракету
         }
+        else
+        {
+            //Произвести выстрел из всех видов оружия вызовом fireDelegate
+            //Сначала произвести нажатие клавиши Axis("Jump")
+            //Затем убедитса что fireDelegate не равно null
+            //Чтобы избежать ошибки
+            if (Input.GetAxis("Jump") == 1 && fireDelegate != null)
+            {
+                //Если была нажата клавиша то Input.GetAxis("Jump") вернёт 1
+                fireDelegate();//вызов делегата  к кторой подключон метод  TempFire
+
+            }
+            if (Input.GetKeyDown(KeyCode.LeftAlt))//Если игрок нажал кнопку F
+            {
+                CreateRocket();//Создать ракету
+            }
+        }
+       
     }
   
 

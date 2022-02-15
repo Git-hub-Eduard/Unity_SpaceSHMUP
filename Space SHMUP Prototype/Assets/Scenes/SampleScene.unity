@@ -1111,23 +1111,15 @@ MonoBehaviour:
   - EnemyPrefabs:
     - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
     - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-    - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-    - {fileID: 9814327509228274, guid: 81617b8b2b03f7f419f2609cf08f9067, type: 3}
-    - {fileID: 6783377074218544730, guid: 3ebdb818241d5004c9129714b6195d4d, type: 3}
-    sizeWave: 30
-  - EnemyPrefabs:
-    - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-    - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
-    - {fileID: 7023483623033923534, guid: b3adff3254044944e85f22594ad0931a, type: 3}
-    - {fileID: 7023483623033923534, guid: b3adff3254044944e85f22594ad0931a, type: 3}
-    - {fileID: 7355474608744001446, guid: dfa8384b7e90c8545a5988ac0e6a60e2, type: 3}
-    - {fileID: 4838188724273091322, guid: 2548ad8586b86cf4daab480139069a55, type: 3}
     - {fileID: 9814327509228274, guid: 81617b8b2b03f7f419f2609cf08f9067, type: 3}
     - {fileID: 6783377074218544730, guid: 3ebdb818241d5004c9129714b6195d4d, type: 3}
     sizeWave: 60
   - EnemyPrefabs:
-    - {fileID: 2025104793761549846, guid: d6a2c31ee6328104db6ff7a70d9c1119, type: 3}
-    sizeWave: 2
+    - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
+    - {fileID: 5582297225938607426, guid: b6067818e96079f49bb0901c7f6ddbd5, type: 3}
+    - {fileID: 7023483623033923534, guid: b3adff3254044944e85f22594ad0931a, type: 3}
+    - {fileID: 7355474608744001446, guid: dfa8384b7e90c8545a5988ac0e6a60e2, type: 3}
+    sizeWave: 60
   wave_text: {fileID: 177441796}
 --- !u!114 &963194230
 MonoBehaviour:
@@ -1403,6 +1395,7 @@ MonoBehaviour:
   _shieldLevel: 0
   effectParticles: {fileID: 5275932902757544216, guid: 84b215a5ab4b6b145a998c5c0a52bd4f, type: 3}
   MissileText: {fileID: 447304324}
+  IsTouch: 1
 --- !u!4 &1227316406
 Transform:
   m_ObjectHideFlags: 0
