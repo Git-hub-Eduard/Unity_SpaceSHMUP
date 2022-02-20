@@ -50,6 +50,7 @@ public class Hero : MonoBehaviour
        }
        
        def = Main.GetWeaponDefinion(WeaponType.missile);
+        MissileText.gameObject.SetActive(true);
        UI_Updaye();//Обновить интерфейс
        // Очистить массив weapons и начать игру с 1 бластером
        ClearWeapons();
@@ -71,7 +72,7 @@ public class Hero : MonoBehaviour
 
                     if (touchPosition.y<=transform.position.y+5 && touchPosition.y >= transform.position.y - 5 && touchPosition.x<=transform.position.x+4 && touchPosition.x >= transform.position.x-4)
                     {
-                        print("Попав");
+                        
                         readyMove = true;
                         
                     }
@@ -180,6 +181,7 @@ public class Hero : MonoBehaviour
     /// </summary>
     public void UI_Updaye()
     {
+        
         MissileText.text = "M: " + missileSize;
     }
     void OnTriggerEnter(Collider other)//Срабатывает при столкновении колайдера игрока с другими объектами 
