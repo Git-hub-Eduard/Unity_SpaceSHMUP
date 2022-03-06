@@ -24,6 +24,9 @@ public class Enemy : MonoBehaviour
 
     //Эффекты
     public GameObject MissileBoomParticals;//частици взрива ракеты
+
+    [Header("Получения цвета")]
+    public bool GetMaterialsShaderGraph = true;
     public Vector3 pos
     {
         get
@@ -43,14 +46,31 @@ public class Enemy : MonoBehaviour
         //Получить материалы и цвет этого объекта и его потомков
         materials = Utils.GetAllMaterials(gameObject);
         originalColors = new Color[materials.Length];//Инициализировать масив для записи оригинальных цветов объекта
-        for(int i =0; i<materials.Length; i++)
+        if(GetMaterialsShaderGraph)
         {
-            /*
-             * С помощью цикла выполняетса обход всех материалов и сохраняет их исходные цвета 
-             * в масив originalColors
-             */
-            originalColors[i] = materials[i].color;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                /*
+                 * С помощью цикла выполняетса обход всех материалов и сохраняет их исходные цвета 
+                 * в масив originalColors
+                 */
+               
+                originalColors[i] = materials[i].GetColor("ShadeColor");
+            }
         }
+        else
+        {
+            for (int i = 0; i < materials.Length; i++)
+            {
+                /*
+                 * С помощью цикла выполняетса обход всех материалов и сохраняет их исходные цвета 
+                 * в масив originalColors
+                 */
+                originalColors[i] = materials[i].color;
+                
+            }
+        }
+       
     }
 
     // Update is called once per frame
@@ -152,11 +172,27 @@ public class Enemy : MonoBehaviour
     /// </summary>
     void ShowDamage()
     {
-        foreach(Material m in materials)
+        if(GetMaterialsShaderGraph)
         {
-            //В цикле происходит обход всех материалов и перекрашивают в красний цвет
-            m.color = Color.red;
+            foreach (Material m in materials)
+            {
+              //В цикле происходит обход всех материалов и перекрашивают в красний цвет
+              
+                
+              m.SetColor("ShadeColor", Color.red);
+                
+                
+            }
         }
+        else
+        {
+            foreach (Material m in materials)
+            {
+                //В цикле происходит обход всех материалов и перекрашивают в красний цвет
+                m.color = Color.red;
+            }
+        }
+        
         showingDamage = true;//Установить что попадание отображено
         damageDoneTime = Time.time + showDamageDuration;//Вычислить время окончания ефекта
     }
@@ -167,11 +203,23 @@ public class Enemy : MonoBehaviour
     /// </summary>
     void UnShowDamage()
     {
-        for(int i = 0; i<materials.Length; i++)
+        if(GetMaterialsShaderGraph)
         {
-            //В цикле происходит обход всех материалов и перекрашивают в исходный цвет
-            materials[i].color = originalColors[i];
+            for (int i = 0; i < materials.Length; i++)
+            {
+                //В цикле происходит обход всех материалов и перекрашивают в исходный цвет
+                materials[i].SetColor("ShadeColor", originalColors[i]);
+            }
         }
+        else
+        {
+            for (int i = 0; i < materials.Length; i++)
+            {
+                //В цикле происходит обход всех материалов и перекрашивают в исходный цвет
+                materials[i].color = originalColors[i];
+            }
+        }
+       
         showingDamage = false;//Устанавливает что эфект закончился
     }
 }

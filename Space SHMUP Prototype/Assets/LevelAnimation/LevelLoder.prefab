@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6531719073012330785}
   - component: {fileID: 2050662062058976866}
   - component: {fileID: 9139141607931381979}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 2361185667076212497}
   - component: {fileID: 537432186611947282}
   - component: {fileID: 7598607479675389390}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 8066668733974243195}
   - component: {fileID: 7521231194733815359}
   - component: {fileID: 6906692179772501005}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 998412613443763385}
   - component: {fileID: 4017500822603137112}
   - component: {fileID: 5299350966790649011}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: DoorTransiction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +566,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &998412613443763385
 MonoBehaviour:

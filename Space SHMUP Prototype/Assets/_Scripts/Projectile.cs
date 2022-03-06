@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
     public Rigidbody rigid;
     [SerializeField]
     private WeaponType _type;//Тип оружия 
+    private TrailRenderer _trailRenderer;
     public WeaponType type
     {
         get
@@ -24,6 +25,7 @@ public class Projectile : MonoBehaviour
     }
     void Awake()// Перед созданием объекта на сцене
     {
+        _trailRenderer = GetComponent<TrailRenderer>();
         bndCheck = GetComponent<BoundsCheck>();//получить ссылку на компонент BoundsCheck
         rend = GetComponent<Renderer>();// получить ссылку на компонент Renderer
         rigid = GetComponent<Rigidbody>();//получить ссылку на компонент Rigidbody
@@ -52,5 +54,6 @@ public class Projectile : MonoBehaviour
         _type = eType;//Изменить тип оружия 
         WeaponDefinion def = Main.GetWeaponDefinion(_type);// Получить экземпляр WeaponDefinion что соотвецтвует типу оружия
         rend.material.color = def.projectileColor;//Изменить цвет оружия который задан в масиве
+        _trailRenderer.material.SetColor("ShadeColor" ,def.projectileColor);
     }
 }

@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9f4f646023b52134294e9a170db6bb8a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,7 +155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9f4f646023b52134294e9a170db6bb8a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   fireRate: 0.3
-  health: 5
+  health: 3
   score: 100
   showDamageDuration: 0.1
   powerUpDropChance: 0.25
@@ -265,6 +265,7 @@ MonoBehaviour:
   damageDoneTime: 0
   notifiedOfDestruction: 0
   MissileBoomParticals: {fileID: 5275932902757544216, guid: ef9990eee8e6aad47a9ace22d548a45d, type: 3}
+  GetMaterialsShaderGraph: 1
 --- !u!114 &3331699828225434860
 MonoBehaviour:
   m_ObjectHideFlags: 0

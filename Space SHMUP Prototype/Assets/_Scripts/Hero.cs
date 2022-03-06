@@ -21,13 +21,14 @@ public class Hero : MonoBehaviour
     public GameObject[] Turrets;//Масив турелей
     [Header("Set Dynamically")]
     [SerializeField]
-    private float _shieldLevel = 1;
+    private float _shieldLevel = 1f;
+    private float health = 1;
     private GameObject lastTriggerGo = null;//переменная хранит ссылку на последний столкнувшийся игровой объект
 
     [Header("Эфекты")]
     //еффекты 
     public GameObject effectParticles;//Игровой объект частици
-
+    private Material[] materialsDamge;
     //Интерфейс
     public Text MissileText;//Для изображения количества ракет
 
@@ -40,6 +41,7 @@ public class Hero : MonoBehaviour
     public WeaponFireDelegate fireDelegate;
     void Start()
     {
+       materialsDamge = GetHeroMaterials.GetAllMaterials(gameObject);
        if(S==null)
        {
            S = this;//Сохранить ссылку на одиночку
@@ -50,7 +52,7 @@ public class Hero : MonoBehaviour
        }
        
        def = Main.GetWeaponDefinion(WeaponType.missile);
-        MissileText.gameObject.SetActive(true);
+       MissileText.gameObject.SetActive(true);
        UI_Updaye();//Обновить интерфейс
        // Очистить массив weapons и начать игру с 1 бластером
        ClearWeapons();
@@ -268,8 +270,15 @@ public class Hero : MonoBehaviour
             //Если уровень поля упал до нуля или ниже 
             if (value<0)
             {
-                Destroy(this.gameObject);//уничтожить корабль игрока
-                Main.S.DelayedRestart(RestartDelay);//Перезагрузить игру
+                _shieldLevel = 0;
+                health = health - 0.25f;//Убрать жизнь 
+                DetectedDamage(health);//Нанести повреждения
+               if(health == 0)//Если жизней 0 уничтожить корабль
+               {
+                    Destroy(this.gameObject);//уничтожить корабль игрока
+                    Main.S.DelayedRestart(RestartDelay);//Перезагрузить игру
+               }
+                
             }
         }
     }
@@ -328,6 +337,15 @@ public class Hero : MonoBehaviour
                 go.SetActive(true);
                 return;
             }
+        }
+    }
+
+
+    void DetectedDamage(float damage)
+    {
+        foreach(Material mat in materialsDamge)
+        {
+            mat.SetFloat("Health", damage);
         }
     }
 }
