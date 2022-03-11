@@ -5,6 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject Impact;
+    private ParticleSystem _impact;
     private BoundsCheck bndCheck;
     private Renderer rend;// Для изменения цвет
     [Header("Set Dynamically")]
@@ -12,6 +14,7 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private WeaponType _type;//Тип оружия 
     private TrailRenderer _trailRenderer;
+    
     public WeaponType type
     {
         get
@@ -26,6 +29,7 @@ public class Projectile : MonoBehaviour
     void Awake()// Перед созданием объекта на сцене
     {
         _trailRenderer = GetComponent<TrailRenderer>();
+        _impact = Impact.GetComponent<ParticleSystem>();
         bndCheck = GetComponent<BoundsCheck>();//получить ссылку на компонент BoundsCheck
         rend = GetComponent<Renderer>();// получить ссылку на компонент Renderer
         rigid = GetComponent<Rigidbody>();//получить ссылку на компонент Rigidbody
@@ -54,6 +58,13 @@ public class Projectile : MonoBehaviour
         _type = eType;//Изменить тип оружия 
         WeaponDefinion def = Main.GetWeaponDefinion(_type);// Получить экземпляр WeaponDefinion что соотвецтвует типу оружия
         rend.material.color = def.projectileColor;//Изменить цвет оружия который задан в масиве
-        _trailRenderer.material.SetColor("ShadeColor" ,def.projectileColor);
+        _trailRenderer.material.SetColor("ShadeColor", def.projectileColor);
+        var main = _impact.main;//Импакт от столкновения 
+        main.startColor = def.projectileColor;//Импакт от столкновения
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Instantiate(Impact, transform.position,Quaternion.identity);
+    }
+
 }
