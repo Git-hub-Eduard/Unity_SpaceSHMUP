@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Scripts\Enemy.cs" />
     <Compile Include="Assets\_Scripts\Enemy_1.cs" />
+    <Compile Include="Assets\_Scripts\FinishPortal.cs" />
     <Compile Include="Assets\_Scripts\Turret.cs" />
     <Compile Include="Assets\_Scripts\Shield.cs" />
     <Compile Include="Assets\_Scripts\LevelScene.cs" />
@@ -70,11 +71,12 @@
     <Compile Include="Assets\_Scripts\BoundsCheck.cs" />
     <Compile Include="Assets\_Scripts\EnemyWeapon.cs" />
     <Compile Include="Assets\_Scripts\PauseMenuScript.cs" />
+    <Compile Include="Assets\_Scripts\GetHeroMaterials.cs" />
     <Compile Include="Assets\_Scripts\Group_enemy.cs" />
     <Compile Include="Assets\_Scripts\PowerUp.cs" />
     <Compile Include="Assets\_Scripts\Utils.cs" />
     <Compile Include="Assets\_Scripts\Rocket.cs" />
-    <Compile Include="Assets\_Scripts\GetHeroMaterials.cs" />
+    <Compile Include="Assets\_Scripts\FinishMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Materials\UnlitAlpha.shader" />

@@ -11,6 +11,7 @@ TagManager:
   - PowerUp
   - PowerUpBox
   - Rocket
+  - Portal
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - ProjectileHero
   - ProjectileEnemy
   - PowerUp
-  - 
+  - Portal
   - 
   - 
   - 

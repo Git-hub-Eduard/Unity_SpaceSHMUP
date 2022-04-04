@@ -34,6 +34,8 @@ public class Main : MonoBehaviour
     private Animator anim_Wave;//Анимация надпсии что сообщает про появление новой волны
     public Text wave_text;
     private BoundsCheck bndCheck;
+    [Header("Окно финиша")]
+    public GameObject FinishPause;
     /// <summary>
     /// Данный метод создает бонус на месте уничтоженого корабля
     /// </summary>
@@ -156,4 +158,13 @@ public class Main : MonoBehaviour
         return (new WeaponDefinion());
     }
 
+    /// <summary>
+    /// Вызывает окно победы
+    /// </summary>
+    public void Finish()
+    {
+        print("Метод сработал");
+        FinishPause.SetActive(true);
+        Time.timeScale = 0f;
+    }
 }
