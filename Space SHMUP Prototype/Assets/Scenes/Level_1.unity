@@ -2020,7 +2020,7 @@ MonoBehaviour:
   - {fileID: 1485062117}
   _shieldLevel: 0
   MissileText: {fileID: 1358272931}
-  IsTouch: 1
+  IsTouch: 0
 --- !u!4 &1400402541
 Transform:
   m_ObjectHideFlags: 0

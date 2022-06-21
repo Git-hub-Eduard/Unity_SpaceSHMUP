@@ -2635,7 +2635,7 @@ MonoBehaviour:
   - {fileID: 1243931716}
   _shieldLevel: 0
   MissileText: {fileID: 447304324}
-  IsTouch: 1
+  IsTouch: 0
 --- !u!4 &1227316406
 Transform:
   m_ObjectHideFlags: 0
