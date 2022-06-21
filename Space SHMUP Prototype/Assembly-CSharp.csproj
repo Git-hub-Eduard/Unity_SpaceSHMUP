@@ -56,6 +56,7 @@
     <Compile Include="Assets\_Scripts\Enemy.cs" />
     <Compile Include="Assets\_Scripts\Enemy_1.cs" />
     <Compile Include="Assets\_Scripts\FinishPortal.cs" />
+    <Compile Include="Assets\_Scripts\RocketTurret.cs" />
     <Compile Include="Assets\_Scripts\Turret.cs" />
     <Compile Include="Assets\_Scripts\Shield.cs" />
     <Compile Include="Assets\_Scripts\LevelScene.cs" />
@@ -67,16 +68,20 @@
     <Compile Include="Assets\_Scripts\Enemy_2.cs" />
     <Compile Include="Assets\_Scripts\Hero.cs" />
     <Compile Include="Assets\_Scripts\Main.cs" />
+    <Compile Include="Assets\_Scripts\FinishMenu.cs" />
     <Compile Include="Assets\_Scripts\Enemy_Group.cs" />
     <Compile Include="Assets\_Scripts\BoundsCheck.cs" />
     <Compile Include="Assets\_Scripts\EnemyWeapon.cs" />
     <Compile Include="Assets\_Scripts\PauseMenuScript.cs" />
     <Compile Include="Assets\_Scripts\GetHeroMaterials.cs" />
+    <Compile Include="Assets\_Scripts\EnemyTurret.cs" />
     <Compile Include="Assets\_Scripts\Group_enemy.cs" />
     <Compile Include="Assets\_Scripts\PowerUp.cs" />
     <Compile Include="Assets\_Scripts\Utils.cs" />
     <Compile Include="Assets\_Scripts\Rocket.cs" />
-    <Compile Include="Assets\_Scripts\FinishMenu.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_Move_Hero.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_and_body\EnemyBodyRotate.cs" />
+    <Compile Include="Assets\_Scripts\Enemy_and_body\EnemyBodyMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Materials\UnlitAlpha.shader" />

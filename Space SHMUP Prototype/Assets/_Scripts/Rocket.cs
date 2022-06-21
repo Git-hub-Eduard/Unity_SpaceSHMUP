@@ -42,11 +42,11 @@ public class Rocket : MonoBehaviour
         }
         if (bndCheck.offUp)// Если пересёк вехнюю границу экрана 
         {
-            Destroy(gameObject);//Уничтожить снаряд
+            Destroy(this.gameObject);//Уничтожить снаряд
         }
         if (bndCheck.offDown)// Если пересёк нижнюю границу экрана
         {
-            Destroy(gameObject);//Уничтожить снаряд
+            Destroy(this.gameObject);//Уничтожить снаряд
         }
 
     }

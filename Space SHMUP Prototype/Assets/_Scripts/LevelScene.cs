@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class LevelScene : MonoBehaviour
 {
     public Animator animator;
-    public void NextLevel()
+    public void NextLevel(int i)
     {
-        StartCoroutine(MakeTransition(1));
+        StartCoroutine(MakeTransition(i));
     }
 
     IEnumerator MakeTransition(int i)

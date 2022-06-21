@@ -13,12 +13,10 @@ public class Hero : MonoBehaviour
     public float pitchMult = 30;//Поворот корабля по оси У
     public float RestartDelay = 2f;//Через сколько перезагрузить игру
     //public GameObject projectilePrefab;//Шаблон снаряда
-    public int missileSize = 0;//Количество ракет
-    private float missileTime = 0;//Время последнего выстрела
-    private WeaponDefinion def;//Свойства ракеты 
-    public float projectileSpeed = 40;//Скорость снаряда 
+    [Header("Вооружение")]
     public Weapon[] weapons;//Масив будет хранить ссылки на каждое оружие
     public GameObject[] Turrets;//Масив турелей
+    public GameObject[] RocketTurrets;//Масив ракетных турелей
     [Header("Set Dynamically")]
     [SerializeField]
     private float _shieldLevel = 1f;
@@ -27,7 +25,6 @@ public class Hero : MonoBehaviour
 
     [Header("Эфекты")]
     //еффекты 
-    public GameObject effectParticles;//Игровой объект частици
     private Material[] materialsDamge;
     //Интерфейс
     public Text MissileText;//Для изображения количества ракет
@@ -51,7 +48,6 @@ public class Hero : MonoBehaviour
            Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");// Прописать ошибку если создан ещё один экземпляр Hero S
        }
        
-       def = Main.GetWeaponDefinion(WeaponType.missile);
        MissileText.gameObject.SetActive(true);
        UI_Updaye();//Обновить интерфейс
        // Очистить массив weapons и начать игру с 1 бластером
@@ -84,7 +80,7 @@ public class Hero : MonoBehaviour
                     if (readyMove)
                     {
                        transform.position = touchPosition;
-                       Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
+                       
                     }
                 }
                 if (touch.phase == TouchPhase.Ended)
@@ -103,10 +99,7 @@ public class Hero : MonoBehaviour
              * Если нажать кнопку то  в xAxis запишет -1 и 1, в лево или в право соответственно
              * Если нажать кнопку то  в yAxis запишет -1 и 1, в низ или вверх
              */
-            if (xAxis != 0f || yAxis != 0f)//Проверить нажата ли кнопка  в лево или в право в верх в низ
-            {
-                Instantiate(effectParticles, transform.position, Quaternion.identity);//Создать еффект
-            }
+            
             //Изменить transform.position, опираясь на информацию по осям 
             Vector3 pos = transform.position;// записать текущии координаты корабля 
             pos.x += xAxis * speed * Time.deltaTime;//Записать координаты перемещения
@@ -131,7 +124,7 @@ public class Hero : MonoBehaviour
         if (IsTouch)
         {
             fireDelegate();//вызов делегата  к кторой подключон метод  TempFire       
-            CreateRocket();//Создать ракету
+            
         }
         else
         {
@@ -145,38 +138,14 @@ public class Hero : MonoBehaviour
                 fireDelegate();//вызов делегата  к кторой подключон метод  TempFire
 
             }
-            if (Input.GetKeyDown(KeyCode.LeftAlt))//Если игрок нажал кнопку F
-            {
-                CreateRocket();//Создать ракету
-            }
+            
         }
        
     }
   
 
-    /// <summary>
-    /// Функция что создает ракету
-    /// </summary>
-    void CreateRocket()
-    {
-        if(missileSize == 0)//Если количество ракет равно 0
-        {
-            return;
-        }
-        else if((Time.time-missileTime)<def.delayBetwenshots)//Проверить прошло ли достаточно времени что было дозволено создать ракету
-        {
-            return;
-        }
-        else
-        {
-            GameObject missile = Instantiate<GameObject>(def.projectilePefab);//Создать ракету 
-            missile.transform.position = transform.position;//Расположить на месте корабля 
-            missileSize--;//отнять количество ракет
-            UI_Updaye();//Обновить интерфейс
-            missileTime = Time.time;
-        }
-       
-    }
+    
+    
 
     /// <summary>
     /// Функция для обновления интерфейса
@@ -184,7 +153,7 @@ public class Hero : MonoBehaviour
     public void UI_Updaye()
     {
         
-        MissileText.text = "M: " + missileSize;
+        MissileText.text = "H: " + health;//Отобразить количество жизней
     }
     void OnTriggerEnter(Collider other)//Срабатывает при столкновении колайдера игрока с другими объектами 
     {
@@ -231,8 +200,7 @@ public class Hero : MonoBehaviour
                 shieldLevel++;//Прибавить к щиту 1
                 break;
             case WeaponType.missile:
-                missileSize = missileSize+2;//Добавить 2 ракеты
-                UI_Updaye();//Обновить интерфейс
+                AddRocketTurretSlot();
                 break;
             case WeaponType.turret:
                 AddTuretSlot();
@@ -271,7 +239,8 @@ public class Hero : MonoBehaviour
             if (value<0)
             {
                 _shieldLevel = 0;
-                health = health - 0.25f;//Убрать жизнь 
+                health = health - 0.25f;//Убрать жизнь
+                UI_Updaye();// Обновить интерфейс
                 DetectedDamage(health);//Нанести повреждения
                if(health == 0)//Если жизней 0 уничтожить корабль
                {
@@ -322,6 +291,10 @@ public class Hero : MonoBehaviour
         {
             go.SetActive(false);
         }
+        foreach(GameObject go in RocketTurrets)
+        {
+            go.SetActive(false);
+        }
     }
 
 
@@ -340,6 +313,20 @@ public class Hero : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Добавляет слот для ракетной  турели
+    /// </summary>
+    void AddRocketTurretSlot()
+    {
+        foreach (GameObject go in RocketTurrets)
+        {
+            if (go.activeSelf == false)
+            {
+                go.SetActive(true);
+                return;
+            }
+        }
+    }
 
     void DetectedDamage(float damage)
     {

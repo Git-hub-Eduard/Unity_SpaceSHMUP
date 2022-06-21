@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    public WeaponType type = WeaponType.blaster;
-    GameObject Collar;//Дуло
+    private WeaponType type = WeaponType.blaster;
+    private GameObject Collar;//Дуло
     WeaponDefinion def;
     private float timeShoot;
     public float delayShot = 1f;
